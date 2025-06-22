@@ -2,10 +2,6 @@
 
 **WeatherMX** is a sleek, real-time weather forecasting web application that delivers comprehensive meteorological data for cities across the globe. Built with **Next.js (App Router)** and **Tailwind CSS**, WeatherMX offers a responsive and interactive UI with live weather updates, wind analysis, a dynamic map, and a 3-day forecast.
 
-![image](https://github.com/user-attachments/assets/7d4ef172-aeae-441b-98b6-a250051c4cb6)
-![image](https://github.com/user-attachments/assets/8d19b51d-bb08-4d03-9c7e-eebe6ec41f12)
-![image](https://github.com/user-attachments/assets/9c7b440c-8168-4ec5-85b1-6018c444976e)
-
 ---
 
 ## 🚀 Features
