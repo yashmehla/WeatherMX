@@ -459,7 +459,7 @@ export default function Home() {
             <div className="w-full max-w-md">
               <CityInput onSubmit={handleCitySubmit} loading={loading} />
               {error && (
-                <div className="mt-6 p-4 bg-red-900/20 border border-red-500/30 rounded-xl backdrop-blur-sm">
+                <div className="mt-6 p-4 bg-red-900/20 border border-red-500/30 rounded backdrop-blur-sm">
                   <p className="text-red-300 text-center font-medium">{error}</p>
                   <p className="text-red-400 text-center text-sm mt-2">
                     Try searching for a major city name (e.g., "London", "New York", "Tokyo")

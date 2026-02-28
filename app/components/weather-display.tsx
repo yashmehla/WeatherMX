@@ -327,7 +327,7 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
             onBack()
           }}
           variant="ghost"
-          className="text-white hover:bg-gray-800/50 h-12 px-6 rounded-xl"
+          className="text-white hover:bg-gray-800/50 h-12 px-6 rounded"
         >
           <ArrowLeft className="w-5 h-5 mr-2" />
           Back to Search
@@ -347,7 +347,7 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
               if (!soundEnabled) playSound("click")
             }}
             variant="ghost"
-            className="text-white hover:bg-gray-800/50 h-12 w-12 rounded-xl"
+            className="text-white hover:bg-gray-800/50 h-12 w-12 rounded"
           >
             {soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
           </Button>
@@ -357,7 +357,7 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
             onClick={handleRefresh}
             disabled={loading || refreshCooldown > 0}
             variant="ghost"
-            className="text-white hover:bg-gray-800/50 h-12 px-6 rounded-xl disabled:opacity-50 relative overflow-hidden"
+            className="text-white hover:bg-gray-800/50 h-12 px-6 rounded disabled:opacity-50 relative overflow-hidden"
           >
             <RefreshCw className={`w-5 h-5 mr-2 ${loading ? "animate-spin" : ""}`} />
             {loading ? "Updating..." : refreshCooldown > 0 ? `Wait ${refreshCooldown}s` : "Refresh"}
@@ -377,7 +377,7 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-7xl mx-auto">
         {/* Current Weather - Large Card */}
         <div className="lg:col-span-5">
-          <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-8 h-full shadow-2xl">
+          <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-700/50 rounded p-8 h-full shadow-2xl">
             <div className="text-center">
               <div className="text-8xl mb-6">{getWeatherIcon(current.weatherCode, isDayTime)}</div>
               <div className="text-6xl font-bold text-white mb-4">{current.temp_C}°</div>
@@ -387,7 +387,7 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
               {/* Day/Night indicator */}
               <div className="mt-4 flex items-center justify-center space-x-4">
                 <div
-                  className={`flex items-center space-x-2 px-3 py-1 rounded-full ${isDayTime ? "bg-yellow-500/20 text-yellow-300" : "bg-blue-500/20 text-blue-300"}`}
+                  className={`flex items-center space-x-2 px-3 py-1 rounded ${isDayTime ? "bg-yellow-500/20 text-yellow-300" : "bg-blue-500/20 text-blue-300"}`}
                 >
                   {isDayTime ? <Sunrise className="w-4 h-4" /> : <Sunset className="w-4 h-4" />}
                   <span className="text-sm font-medium">{isDayTime ? "Daytime" : "Nighttime"}</span>
@@ -397,22 +397,22 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
 
             {/* Enhanced Weather Metrics Grid */}
             <div className="grid grid-cols-2 gap-4 mt-8">
-              <div className="bg-gray-800/40 rounded-xl p-4 text-center border border-gray-700/30 hover:bg-gray-800/60 transition-colors">
+              <div className="bg-gray-800/40 rounded p-4 text-center border border-gray-700/30 hover:bg-gray-800/60 transition-colors">
                 <Wind className="w-6 h-6 text-blue-400 mx-auto mb-2" />
                 <div className="text-white font-semibold text-lg">{current.windspeedKmph}</div>
                 <div className="text-gray-400 text-sm">km/h</div>
               </div>
-              <div className="bg-gray-800/40 rounded-xl p-4 text-center border border-gray-700/30 hover:bg-gray-800/60 transition-colors">
+              <div className="bg-gray-800/40 rounded p-4 text-center border border-gray-700/30 hover:bg-gray-800/60 transition-colors">
                 <Droplets className="w-6 h-6 text-blue-400 mx-auto mb-2" />
                 <div className="text-white font-semibold text-lg">{current.humidity}</div>
                 <div className="text-gray-400 text-sm">%</div>
               </div>
-              <div className="bg-gray-800/40 rounded-xl p-4 text-center border border-gray-700/30 hover:bg-gray-800/60 transition-colors">
+              <div className="bg-gray-800/40 rounded p-4 text-center border border-gray-700/30 hover:bg-gray-800/60 transition-colors">
                 <Eye className="w-6 h-6 text-green-400 mx-auto mb-2" />
                 <div className="text-white font-semibold text-lg">{current.visibility}</div>
                 <div className="text-gray-400 text-sm">km</div>
               </div>
-              <div className="bg-gray-800/40 rounded-xl p-4 text-center border border-gray-700/30 hover:bg-gray-800/60 transition-colors">
+              <div className="bg-gray-800/40 rounded p-4 text-center border border-gray-700/30 hover:bg-gray-800/60 transition-colors">
                 <Gauge className="w-6 h-6 text-purple-400 mx-auto mb-2" />
                 <div className="text-white font-semibold text-lg">{current.pressure}</div>
                 <div className="text-gray-400 text-sm">mb</div>
@@ -422,12 +422,12 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
             {/* Sunrise/Sunset Times */}
             {(today.sunrise || today.sunset) && (
               <div className="mt-6 grid grid-cols-2 gap-4">
-                <div className="bg-gradient-to-r from-orange-500/20 to-yellow-500/20 rounded-xl p-4 text-center border border-orange-500/30">
+                <div className="bg-gradient-to-r from-orange-500/20 to-yellow-500/20 rounded p-4 text-center border border-orange-500/30">
                   <Sunrise className="w-6 h-6 text-orange-400 mx-auto mb-2" />
                   <div className="text-white font-semibold text-lg">{formatTime(today.sunrise)}</div>
                   <div className="text-gray-400 text-sm">Sunrise</div>
                 </div>
-                <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl p-4 text-center border border-purple-500/30">
+                <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded p-4 text-center border border-purple-500/30">
                   <Sunset className="w-6 h-6 text-purple-400 mx-auto mb-2" />
                   <div className="text-white font-semibold text-lg">{formatTime(today.sunset)}</div>
                   <div className="text-gray-400 text-sm">Sunset</div>
@@ -446,7 +446,7 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
 
         {/* Weather Map */}
         <div className="lg:col-span-12">
-          <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-8 shadow-2xl">
+          <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-700/50 rounded p-8 shadow-2xl">
             <h3 className="text-2xl font-bold text-white mb-6">Weather Map - {city}</h3>
             <div className="h-96">
               <WeatherMap weatherData={weatherData} city={city} />
@@ -456,7 +456,7 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
 
         {/* Forecast */}
         <div className="lg:col-span-12">
-          <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-8 shadow-2xl">
+          <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-700/50 rounded p-8 shadow-2xl">
             <h3 className="text-2xl font-bold text-white mb-6 text-center">
               {weatherData.weather.length}-Day Forecast
             </h3>
@@ -465,7 +465,7 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
                 {weatherData.weather.map((day: any, index: number) => (
                   <div
                     key={index}
-                    className="bg-gray-800/30 rounded-xl p-6 text-center hover:bg-gray-800/50 transition-colors min-w-[200px] border border-gray-700/30"
+                    className="bg-gray-800/30 rounded p-6 text-center hover:bg-gray-800/50 transition-colors min-w-[200px] border border-gray-700/30"
                   >
                     <div className="text-gray-400 text-sm mb-4 font-medium">
                       {index === 0

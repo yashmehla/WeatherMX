@@ -39,7 +39,7 @@ export function WeatherTile({ weatherData, city }: WeatherTileProps) {
   return (
     <div className="h-full space-y-6">
       {/* Wind Information Tile */}
-      <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-6 shadow-2xl">
+      <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-700/50 rounded p-6 shadow-2xl">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-xl font-bold text-white">Wind Analysis</h3>
           <Wind className="w-6 h-6 text-gray-400" />
@@ -63,14 +63,14 @@ export function WeatherTile({ weatherData, city }: WeatherTileProps) {
         </div>
 
         {/* Wind speed indicator */}
-        <div className="mt-6 p-4 bg-gray-800/30 rounded-lg">
+        <div className="mt-6 p-4 bg-gray-800/30 rounded-sm">
           <div className="flex justify-between text-sm mb-2">
             <span className="text-gray-400">Wind Intensity</span>
             <span className="text-white">{current.windspeedKmph} km/h</span>
           </div>
-          <div className="w-full bg-gray-700 rounded-full h-3 relative overflow-hidden">
+          <div className="w-full bg-gray-700 rounded-sm h-3 relative overflow-hidden">
             <div
-              className="h-3 rounded-full transition-all duration-1000 relative"
+              className="h-3 rounded-sm transition-all duration-1000 relative"
               style={{
                 width: `${Math.min((Number.parseInt(current.windspeedKmph) / 50) * 100, 100)}%`,
                 background: `linear-gradient(90deg, 
@@ -116,18 +116,18 @@ export function WeatherTile({ weatherData, city }: WeatherTileProps) {
       </div>
 
       {/* Additional Metrics Tile */}
-      <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-700/50 rounded-2xl p-6 shadow-2xl">
+      <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-700/50 rounded p-6 shadow-2xl">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-xl font-bold text-white">Atmospheric Data</h3>
           <Thermometer className="w-6 h-6 text-gray-400" />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-gray-800/30 rounded-xl p-4">
+          <div className="bg-gray-800/30 rounded p-4">
             <div className="text-gray-400 text-sm mb-1">UV Index</div>
             <div className="text-xl font-bold text-white">{current.uvIndex || "N/A"}</div>
           </div>
-          <div className="bg-gray-800/30 rounded-xl p-4">
+          <div className="bg-gray-800/30 rounded p-4">
             <div className="text-gray-400 text-sm mb-1">Cloud Cover</div>
             <div className="text-xl font-bold text-white">{current.cloudcover}%</div>
           </div>
@@ -140,9 +140,9 @@ export function WeatherTile({ weatherData, city }: WeatherTileProps) {
               <span className="text-gray-400">Humidity</span>
               <span className="text-white">{current.humidity}%</span>
             </div>
-            <div className="w-full bg-gray-800 rounded-full h-2">
+            <div className="w-full bg-gray-800 rounded-sm h-2">
               <div
-                className="bg-gradient-to-r from-blue-500 to-blue-300 h-2 rounded-full transition-all duration-500"
+                className="bg-gradient-to-r from-blue-500 to-blue-300 h-2 rounded-sm transition-all duration-500"
                 style={{ width: `${current.humidity}%` }}
               ></div>
             </div>
@@ -153,9 +153,9 @@ export function WeatherTile({ weatherData, city }: WeatherTileProps) {
               <span className="text-gray-400">Visibility</span>
               <span className="text-white">{current.visibility} km</span>
             </div>
-            <div className="w-full bg-gray-800 rounded-full h-2">
+            <div className="w-full bg-gray-800 rounded-sm h-2">
               <div
-                className="bg-gradient-to-r from-green-500 to-green-300 h-2 rounded-full transition-all duration-500"
+                className="bg-gradient-to-r from-green-500 to-green-300 h-2 rounded-sm transition-all duration-500"
                 style={{ width: `${Math.min((Number.parseInt(current.visibility) / 10) * 100, 100)}%` }}
               ></div>
             </div>
