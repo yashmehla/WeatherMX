@@ -3,9 +3,8 @@ import type { Metadata } from "next"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "WeatherMX - Advanced Weather Analytics",
-  description: "Modern weather application with real-time data and interactive maps",
-    generator: 'v0.dev'
+  title: "WeatherMX — Precision Weather Intelligence",
+  description: "Minimal weather dashboard with real-time data, interactive maps, and accurate forecasts",
 }
 
 export default function RootLayout({
@@ -23,7 +22,7 @@ export default function RootLayout({
           crossOrigin=""
         />
       </head>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="antialiased bg-[#080808] text-white" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>{children}</body>
     </html>
   )
 }
