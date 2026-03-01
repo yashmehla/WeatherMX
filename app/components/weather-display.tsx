@@ -1,6 +1,5 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
 import {
   ArrowLeft,
   Wind,
@@ -10,8 +9,6 @@ import {
   RefreshCw,
   Sunrise,
   Sunset,
-  Volume2,
-  VolumeX,
   Sun,
   Moon,
   Cloud,
@@ -22,6 +19,10 @@ import {
   CloudSun,
   CloudMoon,
   Snowflake,
+  Thermometer,
+  CloudSnow,
+  Waves,
+  Timer,
 } from "lucide-react"
 import { WeatherTile } from "./weather-tile"
 import { WeatherMap } from "./weather-map"
@@ -36,81 +37,17 @@ interface WeatherDisplayProps {
 }
 
 export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }: WeatherDisplayProps) {
-  const [soundEnabled, setSoundEnabled] = useState(true)
   const [lastRefresh, setLastRefresh] = useState<number>(0)
   const [refreshCooldown, setRefreshCooldown] = useState(0)
+  const [autoRefresh, setAutoRefresh] = useState(false)
 
   const current = weatherData.current_condition[0]
   const today = weatherData.weather[0]
 
-  // Play sound effects
-  const playSound = (type: "refresh" | "success" | "error" | "click") => {
-    if (!soundEnabled) return
-
-    try {
-      const audio = new Audio()
-      switch (type) {
-        case "refresh":
-          const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-          const oscillator = audioContext.createOscillator()
-          const gainNode = audioContext.createGain()
-
-          oscillator.connect(gainNode)
-          gainNode.connect(audioContext.destination)
-
-          oscillator.frequency.setValueAtTime(800, audioContext.currentTime)
-          oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1)
-
-          gainNode.gain.setValueAtTime(0.1, audioContext.currentTime)
-          gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1)
-
-          oscillator.start(audioContext.currentTime)
-          oscillator.stop(audioContext.currentTime + 0.1)
-          break
-        case "success":
-          const successContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-          const successOsc = successContext.createOscillator()
-          const successGain = successContext.createGain()
-
-          successOsc.connect(successGain)
-          successGain.connect(successContext.destination)
-
-          successOsc.frequency.setValueAtTime(523, successContext.currentTime)
-          successOsc.frequency.setValueAtTime(659, successContext.currentTime + 0.1)
-          successOsc.frequency.setValueAtTime(784, successContext.currentTime + 0.2)
-
-          successGain.gain.setValueAtTime(0.1, successContext.currentTime)
-          successGain.gain.exponentialRampToValueAtTime(0.01, successContext.currentTime + 0.3)
-
-          successOsc.start(successContext.currentTime)
-          successOsc.stop(successContext.currentTime + 0.3)
-          break
-        case "click":
-          const clickContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-          const clickOsc = clickContext.createOscillator()
-          const clickGain = clickContext.createGain()
-
-          clickOsc.connect(clickGain)
-          clickGain.connect(clickContext.destination)
-
-          clickOsc.frequency.setValueAtTime(1000, clickContext.currentTime)
-          clickGain.gain.setValueAtTime(0.05, clickContext.currentTime)
-          clickGain.gain.exponentialRampToValueAtTime(0.01, clickContext.currentTime + 0.05)
-
-          clickOsc.start(clickContext.currentTime)
-          clickOsc.stop(clickContext.currentTime + 0.05)
-          break
-      }
-    } catch (error) {
-      console.warn("Sound playback failed:", error)
-    }
-  }
-
-  // Enhanced refresh with cooldown and sound
   const handleRefresh = () => {
     const now = Date.now()
     const timeSinceLastRefresh = now - lastRefresh
-    const cooldownTime = 3000
+    const cooldownTime = 5000
 
     if (timeSinceLastRefresh < cooldownTime) {
       const remaining = Math.ceil((cooldownTime - timeSinceLastRefresh) / 1000)
@@ -118,7 +55,6 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
       return
     }
 
-    playSound("refresh")
     setLastRefresh(now)
     onRefresh()
   }
@@ -133,14 +69,16 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
     }
   }, [refreshCooldown])
 
-  // Play success sound when data loads
+  // Auto-refresh every 5 minutes
   useEffect(() => {
-    if (weatherData && !loading) {
-      playSound("success")
-    }
-  }, [weatherData, loading])
+    if (!autoRefresh) return
+    const interval = setInterval(() => {
+      onRefresh()
+    }, 5 * 60 * 1000)
+    return () => clearInterval(interval)
+  }, [autoRefresh, onRefresh])
 
-  // Weather code groupings (WMO, OpenWeatherMap, and WeatherAPI codes)
+  // Weather code groupings
   const CLEAR_CODES = [0, 113, 800, 1000]
   const PARTLY_CLOUDY_CODES = [1, 116, 801, 1003]
   const CLOUDY_CODES = [2, 3, 119, 122, 802, 803, 804, 1006, 1009]
@@ -162,243 +100,269 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
     1087, 1273, 1276, 1279, 1282,
   ]
 
-  // SVG icon-based weather icon system
   const getWeatherIcon = (code: string, isDay = true, size = "w-16 h-16") => {
     const codeNum = parseInt(code)
 
     if (CLEAR_CODES.includes(codeNum)) {
       return isDay
-        ? <Sun className={`${size} text-amber-400`} strokeWidth={1.5} />
-        : <Moon className={`${size} text-blue-300`} strokeWidth={1.5} />
+        ? <Sun className={`${size} text-white`} strokeWidth={1} />
+        : <Moon className={`${size} text-white/70`} strokeWidth={1} />
     }
-
     if (PARTLY_CLOUDY_CODES.includes(codeNum)) {
       return isDay
-        ? <CloudSun className={`${size} text-amber-300`} strokeWidth={1.5} />
-        : <CloudMoon className={`${size} text-blue-200`} strokeWidth={1.5} />
+        ? <CloudSun className={`${size} text-white/80`} strokeWidth={1} />
+        : <CloudMoon className={`${size} text-white/60`} strokeWidth={1} />
     }
-
     if (CLOUDY_CODES.includes(codeNum)) {
-      return <Cloud className={`${size} text-gray-300`} strokeWidth={1.5} />
+      return <Cloud className={`${size} text-white/60`} strokeWidth={1} />
     }
-
     if (FOG_CODES.includes(codeNum)) {
-      return <CloudFog className={`${size} text-gray-400`} strokeWidth={1.5} />
+      return <CloudFog className={`${size} text-white/50`} strokeWidth={1} />
     }
-
     if (DRIZZLE_CODES.includes(codeNum)) {
-      return <CloudDrizzle className={`${size} text-blue-300`} strokeWidth={1.5} />
+      return <CloudDrizzle className={`${size} text-white/60`} strokeWidth={1} />
     }
-
     if (RAIN_CODES.includes(codeNum)) {
-      return <CloudRain className={`${size} text-blue-400`} strokeWidth={1.5} />
+      return <CloudRain className={`${size} text-white/70`} strokeWidth={1} />
     }
-
     if (SNOW_CODES.includes(codeNum)) {
-      return <Snowflake className={`${size} text-sky-200`} strokeWidth={1.5} />
+      return <Snowflake className={`${size} text-white/80`} strokeWidth={1} />
     }
-
     if (THUNDERSTORM_CODES.includes(codeNum)) {
-      return <CloudLightning className={`${size} text-yellow-300`} strokeWidth={1.5} />
+      return <CloudLightning className={`${size} text-white`} strokeWidth={1} />
     }
-
-    // Default fallback
     return isDay
-      ? <CloudSun className={`${size} text-gray-300`} strokeWidth={1.5} />
-      : <CloudMoon className={`${size} text-gray-400`} strokeWidth={1.5} />
+      ? <CloudSun className={`${size} text-white/60`} strokeWidth={1} />
+      : <CloudMoon className={`${size} text-white/50`} strokeWidth={1} />
   }
 
-  // Determine if it's day or night
   const isCurrentlyDay = () => {
-    if (weatherData.isDay !== undefined) {
-      return weatherData.isDay
-    }
-
+    if (weatherData.isDay !== undefined) return weatherData.isDay
     if (today.sunrise && today.sunset) {
       const now = new Date()
       const sunrise = new Date(today.sunrise)
       const sunset = new Date(today.sunset)
       return now >= sunrise && now <= sunset
     }
-
     const hour = new Date().getHours()
     return hour >= 6 && hour < 18
   }
 
-  // Format time for display
   const formatTime = (timeString: string) => {
-    if (!timeString) return "N/A"
+    if (!timeString || timeString === "N/A") return "—"
     try {
       const date = new Date(timeString)
       return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
     } catch {
-      return "N/A"
+      return "—"
+    }
+  }
+
+  const formatHourlyTime = (timeString: string) => {
+    try {
+      const date = new Date(timeString)
+      return date.toLocaleTimeString([], { hour: "2-digit" })
+    } catch {
+      return "—"
     }
   }
 
   const isDayTime = isCurrentlyDay()
 
   return (
-    <div className="min-h-screen p-4 lg:p-8">
+    <div className="min-h-screen p-4 lg:p-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 max-w-7xl mx-auto">
-        <Button
-          onClick={() => {
-            playSound("click")
-            onBack()
-          }}
-          variant="ghost"
-          className="text-white/60 hover:text-white hover:bg-white/[0.06] h-10 px-4 rounded-lg text-sm"
+      <div className="flex items-center justify-between mb-6 max-w-7xl mx-auto fade-in">
+        <button
+          onClick={onBack}
+          className="text-white/40 hover:text-white h-10 px-4 flex items-center gap-2 border border-transparent hover:border-white/[0.08] transition-all duration-200 text-xs font-mono tracking-wider uppercase"
         >
-          <ArrowLeft className="w-4 h-4 mr-2" />
+          <ArrowLeft className="w-3 h-3" />
           Back
-        </Button>
+        </button>
 
         <div className="text-center">
-          <h1 className="text-2xl font-semibold text-white tracking-tight">{city}</h1>
-          <p className="text-white/30 text-xs mt-0.5">
+          <h1 className="text-lg font-light text-white tracking-[0.15em] uppercase">{city}</h1>
+          <p className="text-white/20 text-[10px] font-mono mt-0.5 tracking-wider">
             {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+            {weatherData.timezone && <span className="ml-2 text-white/15">• {weatherData.timezone}</span>}
           </p>
         </div>
 
-        <div className="flex items-center space-x-1">
-          <Button
-            onClick={() => {
-              setSoundEnabled(!soundEnabled)
-              if (!soundEnabled) playSound("click")
-            }}
-            variant="ghost"
-            className="text-white/40 hover:text-white hover:bg-white/[0.06] h-10 w-10 rounded-lg"
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => setAutoRefresh(!autoRefresh)}
+            className={`h-10 px-3 flex items-center gap-1.5 border transition-all duration-200 text-[10px] font-mono tracking-wider uppercase ${
+              autoRefresh
+                ? "border-white/20 text-white/60"
+                : "border-transparent text-white/25 hover:text-white/40 hover:border-white/[0.08]"
+            }`}
+            title="Auto-refresh every 5 minutes"
           >
-            {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-          </Button>
+            <Timer className="w-3 h-3" />
+            <span className="hidden sm:inline">{autoRefresh ? "Auto" : "Auto"}</span>
+            {autoRefresh && <div className="w-1.5 h-1.5 bg-white pulse-dot" />}
+          </button>
 
-          <Button
+          <button
             onClick={handleRefresh}
             disabled={loading || refreshCooldown > 0}
-            variant="ghost"
-            className="text-white/40 hover:text-white hover:bg-white/[0.06] h-10 px-4 rounded-lg disabled:opacity-30 relative overflow-hidden text-sm"
+            className="text-white/30 hover:text-white h-10 px-4 flex items-center gap-2 border border-transparent hover:border-white/[0.08] transition-all duration-200 disabled:opacity-20 text-xs font-mono tracking-wider uppercase"
           >
-            <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`} />
-            {loading ? "Updating" : refreshCooldown > 0 ? `${refreshCooldown}s` : "Refresh"}
-            {refreshCooldown > 0 && (
-              <div
-                className="absolute bottom-0 left-0 h-0.5 bg-blue-500 transition-all duration-1000"
-                style={{ width: `${((3 - refreshCooldown) / 3) * 100}%` }}
-              />
-            )}
-          </Button>
+            <RefreshCw className={`w-3 h-3 ${loading ? "animate-spin" : ""}`} />
+            {loading ? "..." : refreshCooldown > 0 ? `${refreshCooldown}s` : "Refresh"}
+          </button>
         </div>
       </div>
 
       {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 max-w-7xl mx-auto">
-        {/* Current Weather - Large Card */}
-        <div className="lg:col-span-5">
-          <div className="bg-white/[0.04] backdrop-blur-2xl border border-white/[0.06] rounded-lg p-8 h-full">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 max-w-7xl mx-auto">
+
+        {/* Current Weather - Hero Card */}
+        <div className="lg:col-span-5 fade-in fade-in-delay-1">
+          <div className="bg-white/[0.03] border border-white/[0.06] p-8 h-full">
             <div className="text-center">
               <div className="mb-6 flex justify-center">
                 {getWeatherIcon(current.weatherCode, isDayTime, "w-20 h-20")}
               </div>
-              <div className="text-7xl font-light text-white mb-2 tracking-tighter">{current.temp_C}°</div>
-              <div className="text-white/60 text-sm font-medium mb-1">{current.weatherDesc[0].value}</div>
-              <div className="text-white/30 text-xs">Feels like {current.FeelsLikeC}°C</div>
+              <div className="text-8xl font-extralight text-white mb-1 tracking-tighter font-mono">{current.temp_C}°</div>
+              <div className="text-white/40 text-xs font-mono tracking-[0.15em] uppercase mb-0.5">{current.weatherDesc[0].value}</div>
+              <div className="text-white/20 text-[10px] font-mono">Feels like {current.FeelsLikeC}°C</div>
 
-              <div className="mt-5 inline-flex items-center space-x-2 px-3 py-1.5 rounded-md bg-white/[0.04] border border-white/[0.06]">
-                {isDayTime ? <Sun className="w-3.5 h-3.5 text-amber-400" /> : <Moon className="w-3.5 h-3.5 text-blue-300" />}
-                <span className="text-white/50 text-xs font-medium">{isDayTime ? "Daytime" : "Nighttime"}</span>
+              <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 bg-white/[0.03] border border-white/[0.06]">
+                {isDayTime ? <Sun className="w-3 h-3 text-white/40" /> : <Moon className="w-3 h-3 text-white/40" />}
+                <span className="text-white/30 text-[10px] font-mono tracking-wider uppercase">{isDayTime ? "Day" : "Night"}</span>
               </div>
             </div>
 
             {/* Metrics Grid */}
-            <div className="grid grid-cols-2 gap-3 mt-8">
-              <div className="bg-white/[0.03] rounded-lg p-4 text-center border border-white/[0.04] hover:bg-white/[0.06] transition-colors duration-300">
-                <Wind className="w-5 h-5 text-blue-400 mx-auto mb-2" />
-                <div className="text-white font-medium text-lg">{current.windspeedKmph}</div>
-                <div className="text-white/30 text-xs">km/h</div>
-              </div>
-              <div className="bg-white/[0.03] rounded-lg p-4 text-center border border-white/[0.04] hover:bg-white/[0.06] transition-colors duration-300">
-                <Droplets className="w-5 h-5 text-blue-400 mx-auto mb-2" />
-                <div className="text-white font-medium text-lg">{current.humidity}</div>
-                <div className="text-white/30 text-xs">%</div>
-              </div>
-              <div className="bg-white/[0.03] rounded-lg p-4 text-center border border-white/[0.04] hover:bg-white/[0.06] transition-colors duration-300">
-                <Eye className="w-5 h-5 text-emerald-400 mx-auto mb-2" />
-                <div className="text-white font-medium text-lg">{current.visibility}</div>
-                <div className="text-white/30 text-xs">km</div>
-              </div>
-              <div className="bg-white/[0.03] rounded-lg p-4 text-center border border-white/[0.04] hover:bg-white/[0.06] transition-colors duration-300">
-                <Gauge className="w-5 h-5 text-purple-400 mx-auto mb-2" />
-                <div className="text-white font-medium text-lg">{current.pressure}</div>
-                <div className="text-white/30 text-xs">mb</div>
-              </div>
+            <div className="grid grid-cols-2 gap-2 mt-8">
+              {[
+                { icon: Wind, label: "Wind", value: current.windspeedKmph, unit: "km/h" },
+                { icon: Droplets, label: "Humidity", value: current.humidity, unit: "%" },
+                { icon: Eye, label: "Visibility", value: current.visibility, unit: "km" },
+                { icon: Gauge, label: "Pressure", value: current.pressure, unit: "mb" },
+              ].map(({ icon: Icon, label, value, unit }) => (
+                <div key={label} className="bg-white/[0.02] border border-white/[0.04] p-4 text-center hover:bg-white/[0.04] transition-colors duration-300">
+                  <Icon className="w-4 h-4 text-white/20 mx-auto mb-2" />
+                  <div className="text-white font-mono text-lg font-light">{value}</div>
+                  <div className="text-white/20 text-[10px] font-mono tracking-wider uppercase">{unit}</div>
+                </div>
+              ))}
             </div>
 
             {/* Sunrise/Sunset */}
-            {(today.sunrise || today.sunset) && (
-              <div className="mt-4 grid grid-cols-2 gap-3">
-                <div className="bg-white/[0.03] rounded-lg p-4 text-center border border-white/[0.04]">
-                  <Sunrise className="w-5 h-5 text-orange-400 mx-auto mb-2" />
-                  <div className="text-white font-medium">{formatTime(today.sunrise)}</div>
-                  <div className="text-white/30 text-xs">Sunrise</div>
+            {(today.sunrise || today.sunset) && today.sunrise !== "N/A" && (
+              <div className="mt-2 grid grid-cols-2 gap-2">
+                <div className="bg-white/[0.02] border border-white/[0.04] p-4 text-center">
+                  <Sunrise className="w-4 h-4 text-white/20 mx-auto mb-2" />
+                  <div className="text-white font-mono text-sm">{formatTime(today.sunrise)}</div>
+                  <div className="text-white/20 text-[10px] font-mono tracking-wider uppercase">Sunrise</div>
                 </div>
-                <div className="bg-white/[0.03] rounded-lg p-4 text-center border border-white/[0.04]">
-                  <Sunset className="w-5 h-5 text-violet-400 mx-auto mb-2" />
-                  <div className="text-white font-medium">{formatTime(today.sunset)}</div>
-                  <div className="text-white/30 text-xs">Sunset</div>
+                <div className="bg-white/[0.02] border border-white/[0.04] p-4 text-center">
+                  <Sunset className="w-4 h-4 text-white/20 mx-auto mb-2" />
+                  <div className="text-white font-mono text-sm">{formatTime(today.sunset)}</div>
+                  <div className="text-white/20 text-[10px] font-mono tracking-wider uppercase">Sunset</div>
                 </div>
               </div>
             )}
           </div>
         </div>
 
-        {/* Weather Tiles */}
-        <div className="lg:col-span-7">
+        {/* Right Column - Weather Tiles */}
+        <div className="lg:col-span-7 fade-in fade-in-delay-2">
           <WeatherTile weatherData={weatherData} city={city} />
         </div>
 
+        {/* Hourly Forecast */}
+        {weatherData.hourly && weatherData.hourly.length > 0 && (
+          <div className="lg:col-span-12 fade-in fade-in-delay-3">
+            <div className="bg-white/[0.03] border border-white/[0.06] p-6">
+              <h3 className="text-[10px] font-mono text-white/30 mb-4 tracking-[0.2em] uppercase">24-Hour Forecast</h3>
+              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                {weatherData.hourly.slice(0, 24).map((hour: any, index: number) => (
+                  <div
+                    key={index}
+                    className={`flex-shrink-0 w-16 p-3 text-center border transition-colors duration-200 ${
+                      index === 0
+                        ? "bg-white/[0.06] border-white/[0.10]"
+                        : "bg-white/[0.02] border-white/[0.04] hover:bg-white/[0.04]"
+                    }`}
+                  >
+                    <div className="text-white/30 text-[9px] font-mono mb-2">
+                      {index === 0 ? "NOW" : formatHourlyTime(hour.time)}
+                    </div>
+                    <div className="mb-2 flex justify-center">
+                      {getWeatherIcon(hour.weatherCode, isDayTime, "w-5 h-5")}
+                    </div>
+                    <div className="text-white font-mono text-sm font-light">{hour.temp_C}°</div>
+                    {hour.precipProb && parseInt(hour.precipProb) > 0 && (
+                      <div className="text-white/20 text-[9px] font-mono mt-1">
+                        <Droplets className="w-2 h-2 inline mr-0.5" />
+                        {hour.precipProb}%
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Weather Map */}
-        <div className="lg:col-span-12">
-          <div className="bg-white/[0.04] backdrop-blur-2xl border border-white/[0.06] rounded-lg p-6">
-            <h3 className="text-sm font-medium text-white/60 mb-4 uppercase tracking-wider">Location</h3>
-            <div className="h-96 rounded-lg overflow-hidden">
+        <div className="lg:col-span-12 fade-in fade-in-delay-3">
+          <div className="bg-white/[0.03] border border-white/[0.06] p-6">
+            <h3 className="text-[10px] font-mono text-white/30 mb-4 tracking-[0.2em] uppercase">Location</h3>
+            <div className="h-80 overflow-hidden">
               <WeatherMap weatherData={weatherData} city={city} />
             </div>
           </div>
         </div>
 
-        {/* Forecast */}
-        <div className="lg:col-span-12">
-          <div className="bg-white/[0.04] backdrop-blur-2xl border border-white/[0.06] rounded-lg p-6">
-            <h3 className="text-sm font-medium text-white/60 mb-4 uppercase tracking-wider">
+        {/* 7-Day Forecast */}
+        <div className="lg:col-span-12 fade-in fade-in-delay-4">
+          <div className="bg-white/[0.03] border border-white/[0.06] p-6">
+            <h3 className="text-[10px] font-mono text-white/30 mb-4 tracking-[0.2em] uppercase">
               {weatherData.weather.length}-Day Forecast
             </h3>
-            <div className="flex justify-center">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl">
-                {weatherData.weather.map((day: any, index: number) => (
-                  <div
-                    key={index}
-                    className="bg-white/[0.03] rounded-lg p-6 text-center hover:bg-white/[0.06] transition-colors duration-300 border border-white/[0.04]"
-                  >
-                    <div className="text-white/40 text-xs mb-4 font-medium uppercase tracking-wider">
-                      {index === 0
-                        ? "Today"
-                        : new Date(day.date).toLocaleDateString("en-US", {
-                            weekday: "short",
-                            month: "short",
-                            day: "numeric",
-                          })}
-                    </div>
-                    <div className="mb-4 flex justify-center">
-                      {getWeatherIcon(day.hourly[0].weatherCode, true, "w-10 h-10")}
-                    </div>
-                    <div className="text-white font-medium text-xl mb-1">{day.maxtempC}°</div>
-                    <div className="text-white/30 text-sm mb-2">{day.mintempC}°</div>
-                    <div className="text-white/40 text-xs">{day.hourly[0].weatherDesc[0].value}</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-2">
+              {weatherData.weather.map((day: any, index: number) => (
+                <div
+                  key={index}
+                  className={`p-4 text-center border transition-colors duration-200 ${
+                    index === 0
+                      ? "bg-white/[0.06] border-white/[0.10]"
+                      : "bg-white/[0.02] border-white/[0.04] hover:bg-white/[0.04]"
+                  }`}
+                >
+                  <div className="text-white/30 text-[10px] font-mono mb-3 tracking-wider uppercase">
+                    {index === 0
+                      ? "Today"
+                      : new Date(day.date).toLocaleDateString("en-US", { weekday: "short" })}
                   </div>
-                ))}
-              </div>
+                  <div className="mb-3 flex justify-center">
+                    {getWeatherIcon(day.hourly[0].weatherCode, true, "w-8 h-8")}
+                  </div>
+                  <div className="text-white font-mono text-lg font-light">{day.maxtempC}°</div>
+                  <div className="text-white/25 font-mono text-sm">{day.mintempC}°</div>
+                  <div className="text-white/20 text-[9px] font-mono mt-1 truncate">{day.hourly[0].weatherDesc[0].value}</div>
+                  {day.precipMM && parseFloat(day.precipMM) > 0 && (
+                    <div className="text-white/15 text-[9px] font-mono mt-1">
+                      <Droplets className="w-2 h-2 inline mr-0.5" />{parseFloat(day.precipMM).toFixed(1)}mm
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="lg:col-span-12 pb-4">
+          <div className="text-center pt-4 border-t border-white/[0.04]">
+            <p className="text-white/10 text-[9px] font-mono tracking-[0.2em] uppercase">
+              WeatherMX • Built by Yash Mehla • Data from Open-Meteo
+            </p>
           </div>
         </div>
       </div>
