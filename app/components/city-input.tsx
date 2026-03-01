@@ -27,10 +27,6 @@ export function CityInput({ onSubmit, loading }: CityInputProps) {
       async (position) => {
         try {
           const { latitude, longitude } = position.coords
-          const response = await fetch(
-            `https://geocoding-api.open-meteo.com/v1/search?name=&count=1&language=en&format=json&latitude=${latitude}&longitude=${longitude}`
-          )
-          // Use reverse geocoding via nominatim
           const geoResponse = await fetch(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`,
             { headers: { "User-Agent": "WeatherMX/1.0" } }

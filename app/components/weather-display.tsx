@@ -161,7 +161,7 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
   const formatHourlyTime = (timeString: string) => {
     try {
       const date = new Date(timeString)
-      return date.toLocaleTimeString([], { hour: "2-digit", hour12: true })
+      return date.toLocaleTimeString([], { hour: "2-digit" })
     } catch {
       return "—"
     }
