@@ -300,7 +300,7 @@ export function WeatherMap({ weatherData, city }: WeatherMapProps) {
     return (
       <div className="w-full h-full bg-gray-800 rounded flex items-center justify-center">
         <div className="text-center text-white">
-          <div className="text-red-400 mb-2">⚠️ {mapError}</div>
+          <div className="text-red-400 mb-2">{mapError}</div>
           <div className="text-sm text-gray-400">Showing approximate location</div>
         </div>
       </div>

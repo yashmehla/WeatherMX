@@ -68,6 +68,81 @@
   }
 }
 
+/* Animated background */
+.animated-bg {
+  background: linear-gradient(
+    -45deg,
+    #0a0a1a,
+    #0d1b2a,
+    #1b2838,
+    #0a192f,
+    #112240,
+    #0d1117
+  );
+  background-size: 400% 400%;
+  animation: gradientShift 20s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  25% { background-position: 100% 50%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 0% 100%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Floating orbs */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+}
+
+.orb-1 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, #3b82f6, transparent 70%);
+  top: -10%;
+  right: -5%;
+  animation: floatOrb1 15s ease-in-out infinite;
+}
+
+.orb-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #8b5cf6, transparent 70%);
+  bottom: -10%;
+  left: -5%;
+  animation: floatOrb2 18s ease-in-out infinite;
+}
+
+.orb-3 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #06b6d4, transparent 70%);
+  top: 40%;
+  left: 50%;
+  animation: floatOrb3 12s ease-in-out infinite;
+}
+
+@keyframes floatOrb1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-40px, 30px) scale(1.1); }
+  66% { transform: translate(20px, -20px) scale(0.95); }
+}
+
+@keyframes floatOrb2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -40px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+@keyframes floatOrb3 {
+  0%, 100% { transform: translate(-50%, 0) scale(1); }
+  50% { transform: translate(-50%, -30px) scale(1.15); }
+}
+
 /* Custom Leaflet popup styles */
 .leaflet-popup-content-wrapper {
   background: rgba(0, 0, 0, 0.95) !important;
@@ -105,38 +180,4 @@
   background: transparent !important;
   border: none !important;
   z-index: 1000 !important;
-}
-
-/* Enhanced noise effect */
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("/noise.gif");
-  background-repeat: repeat;
-  background-size: 250px 250px;
-  opacity: 0.12;
-  pointer-events: none;
-  z-index: 1;
-  mix-blend-mode: screen;
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("/noise.gif");
-  background-repeat: repeat;
-  background-size: 400px 400px;
-  opacity: 0.06;
-  pointer-events: none;
-  z-index: 2;
-  mix-blend-mode: overlay;
-  transform: rotate(90deg) scale(1.1);
 }

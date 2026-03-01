@@ -25,11 +25,8 @@ export function WeatherTile({ weatherData, city }: WeatherTileProps) {
             transformOrigin: "center center",
           }}
         >
-          {/* Arrow shaft */}
           <line x1="12" y1="20" x2="12" y2="4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          {/* Arrow head */}
           <path d="M12 4 L8 8 L12 6 L16 8 Z" fill="currentColor" />
-          {/* Arrow tail */}
           <path d="M12 20 L10 18 L12 19 L14 18 Z" fill="currentColor" />
         </svg>
       </div>
@@ -37,68 +34,52 @@ export function WeatherTile({ weatherData, city }: WeatherTileProps) {
   }
 
   return (
-    <div className="h-full space-y-6">
+    <div className="h-full space-y-4">
       {/* Wind Information Tile */}
-      <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-700/50 rounded p-6 shadow-2xl">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-bold text-white">Wind Analysis</h3>
-          <Wind className="w-6 h-6 text-gray-400" />
+      <div className="bg-white/[0.04] backdrop-blur-2xl border border-white/[0.06] rounded-lg p-6">
+        <div className="flex items-center justify-between mb-5">
+          <h3 className="text-sm font-medium text-white/60 uppercase tracking-wider">Wind Analysis</h3>
+          <Wind className="w-4 h-4 text-white/20" />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <div className="text-gray-400 text-sm">Speed</div>
-            <div className="text-2xl font-bold text-white">{current.windspeedKmph} km/h</div>
+          <div className="space-y-1">
+            <div className="text-white/40 text-xs uppercase tracking-wider">Speed</div>
+            <div className="text-2xl font-light text-white">{current.windspeedKmph} <span className="text-sm text-white/40">km/h</span></div>
           </div>
-          <div className="space-y-2">
-            <div className="text-gray-400 text-sm">Direction</div>
+          <div className="space-y-1">
+            <div className="text-white/40 text-xs uppercase tracking-wider">Direction</div>
             <div className="flex items-center space-x-3">
-              <WindArrow degrees={windDegrees} size={32} />
+              <WindArrow degrees={windDegrees} size={28} />
               <div className="flex flex-col">
-                <span className="text-xl font-bold text-white">{current.winddir16Point}</span>
-                <span className="text-sm text-gray-400">({windDegrees}°)</span>
+                <span className="text-xl font-light text-white">{current.winddir16Point}</span>
+                <span className="text-xs text-white/30">{windDegrees}°</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Wind speed indicator */}
-        <div className="mt-6 p-4 bg-gray-800/30 rounded-sm">
-          <div className="flex justify-between text-sm mb-2">
-            <span className="text-gray-400">Wind Intensity</span>
-            <span className="text-white">{current.windspeedKmph} km/h</span>
+        <div className="mt-6 p-4 bg-white/[0.03] rounded-lg">
+          <div className="flex justify-between text-xs mb-2">
+            <span className="text-white/40">Intensity</span>
+            <span className="text-white/60">{current.windspeedKmph} km/h</span>
           </div>
-          <div className="w-full bg-gray-700 rounded-sm h-3 relative overflow-hidden">
+          <div className="w-full bg-white/[0.06] rounded-full h-1.5 relative overflow-hidden">
             <div
-              className="h-3 rounded-sm transition-all duration-1000 relative"
+              className="h-1.5 rounded-full transition-all duration-1000"
               style={{
                 width: `${Math.min((Number.parseInt(current.windspeedKmph) / 50) * 100, 100)}%`,
-                background: `linear-gradient(90deg, 
-                  ${Number.parseInt(current.windspeedKmph) < 10 ? "#10b981" : ""} 0%,
-                  ${Number.parseInt(current.windspeedKmph) < 20 ? "#f59e0b" : ""} 50%,
-                  ${Number.parseInt(current.windspeedKmph) >= 20 ? "#ef4444" : ""} 100%
-                )`,
+                background:
+                  Number.parseInt(current.windspeedKmph) < 10
+                    ? "#34d399"
+                    : Number.parseInt(current.windspeedKmph) < 20
+                      ? "#fbbf24"
+                      : "#f87171",
               }}
-            >
-              {/* Animated particles effect */}
-              <div className="absolute inset-0 opacity-60">
-                {[...Array(3)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
-                    style={{
-                      left: `${20 + i * 25}%`,
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      animationDelay: `${i * 0.3}s`,
-                      animationDuration: "1.5s",
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
+            />
           </div>
-          <div className="flex justify-between text-xs text-gray-500 mt-1">
+          <div className="flex justify-between text-[10px] text-white/20 mt-1.5">
             <span>Calm</span>
             <span>Moderate</span>
             <span>Strong</span>
@@ -106,56 +87,56 @@ export function WeatherTile({ weatherData, city }: WeatherTileProps) {
         </div>
 
         {/* Developer Credit */}
-        <div className="mt-6 pt-4 border-t border-gray-700/50">
+        <div className="mt-6 pt-4 border-t border-white/[0.06]">
           <div className="text-center">
-            <div className="text-gray-400 text-sm mb-1">Built By</div>
-            <div className="text-white font-semibold text-lg">Yash Mehla</div>
-            <div className="text-gray-500 text-xs mt-1">Computer Science Engineering</div>
+            <div className="text-white/30 text-xs mb-0.5">Built by</div>
+            <div className="text-white/80 font-medium text-sm">Yash Mehla</div>
+            <div className="text-white/20 text-xs mt-0.5">Computer Science Engineering</div>
           </div>
         </div>
       </div>
 
       {/* Additional Metrics Tile */}
-      <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-700/50 rounded p-6 shadow-2xl">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-bold text-white">Atmospheric Data</h3>
-          <Thermometer className="w-6 h-6 text-gray-400" />
+      <div className="bg-white/[0.04] backdrop-blur-2xl border border-white/[0.06] rounded-lg p-6">
+        <div className="flex items-center justify-between mb-5">
+          <h3 className="text-sm font-medium text-white/60 uppercase tracking-wider">Atmospheric Data</h3>
+          <Thermometer className="w-4 h-4 text-white/20" />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div className="bg-gray-800/30 rounded p-4">
-            <div className="text-gray-400 text-sm mb-1">UV Index</div>
-            <div className="text-xl font-bold text-white">{current.uvIndex || "N/A"}</div>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="bg-white/[0.03] rounded-lg p-4 border border-white/[0.04]">
+            <div className="text-white/40 text-xs uppercase tracking-wider mb-1">UV Index</div>
+            <div className="text-xl font-light text-white">{current.uvIndex || "N/A"}</div>
           </div>
-          <div className="bg-gray-800/30 rounded p-4">
-            <div className="text-gray-400 text-sm mb-1">Cloud Cover</div>
-            <div className="text-xl font-bold text-white">{current.cloudcover}%</div>
+          <div className="bg-white/[0.03] rounded-lg p-4 border border-white/[0.04]">
+            <div className="text-white/40 text-xs uppercase tracking-wider mb-1">Cloud Cover</div>
+            <div className="text-xl font-light text-white">{current.cloudcover}%</div>
           </div>
         </div>
 
         {/* Progress bars */}
-        <div className="mt-4 space-y-3">
+        <div className="mt-4 space-y-4">
           <div>
-            <div className="flex justify-between text-sm mb-1">
-              <span className="text-gray-400">Humidity</span>
-              <span className="text-white">{current.humidity}%</span>
+            <div className="flex justify-between text-xs mb-1.5">
+              <span className="text-white/40">Humidity</span>
+              <span className="text-white/60">{current.humidity}%</span>
             </div>
-            <div className="w-full bg-gray-800 rounded-sm h-2">
+            <div className="w-full bg-white/[0.06] rounded-full h-1.5">
               <div
-                className="bg-gradient-to-r from-blue-500 to-blue-300 h-2 rounded-sm transition-all duration-500"
+                className="bg-blue-400 h-1.5 rounded-full transition-all duration-500"
                 style={{ width: `${current.humidity}%` }}
               ></div>
             </div>
           </div>
 
           <div>
-            <div className="flex justify-between text-sm mb-1">
-              <span className="text-gray-400">Visibility</span>
-              <span className="text-white">{current.visibility} km</span>
+            <div className="flex justify-between text-xs mb-1.5">
+              <span className="text-white/40">Visibility</span>
+              <span className="text-white/60">{current.visibility} km</span>
             </div>
-            <div className="w-full bg-gray-800 rounded-sm h-2">
+            <div className="w-full bg-white/[0.06] rounded-full h-1.5">
               <div
-                className="bg-gradient-to-r from-green-500 to-green-300 h-2 rounded-sm transition-all duration-500"
+                className="bg-emerald-400 h-1.5 rounded-full transition-all duration-500"
                 style={{ width: `${Math.min((Number.parseInt(current.visibility) / 10) * 100, 100)}%` }}
               ></div>
             </div>
@@ -163,11 +144,10 @@ export function WeatherTile({ weatherData, city }: WeatherTileProps) {
         </div>
 
         {/* Data source indicator */}
-        <div className="mt-4 pt-3 border-t border-gray-700/50">
-          <div className="text-xs text-green-400 text-center font-medium">
-            ✓ Live Data • Updated: {new Date().toLocaleTimeString()}
+        <div className="mt-4 pt-3 border-t border-white/[0.06]">
+          <div className="text-[10px] text-white/30 text-center">
+            Live data from Open-Meteo & WeatherAPI
           </div>
-          <div className="text-xs text-gray-500 text-center mt-1">Powered by Open-Meteo & WeatherAPI</div>
         </div>
       </div>
     </div>
