@@ -13,29 +13,25 @@ export function NoiseBackground() {
 
   return (
     <>
-      {/* Primary noise overlay - More visible */}
+      {/* Animated mesh gradient background */}
+      <div className="fixed inset-0 z-0 animated-bg" />
+
+      {/* Floating orbs for depth */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="orb orb-1" />
+        <div className="orb orb-2" />
+        <div className="orb orb-3" />
+      </div>
+
+      {/* Subtle grid overlay */}
       <div
-        className="fixed inset-0 opacity-[0.15] pointer-events-none z-0 mix-blend-screen"
+        className="fixed inset-0 z-0 pointer-events-none opacity-[0.03]"
         style={{
-          backgroundImage: "url(/noise.gif)",
-          backgroundRepeat: "repeat",
-          backgroundSize: "300px 300px",
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
         }}
       />
-
-      {/* Secondary noise layer for more texture */}
-      <div
-        className="fixed inset-0 opacity-[0.08] pointer-events-none z-0 mix-blend-overlay"
-        style={{
-          backgroundImage: "url(/noise.gif)",
-          backgroundRepeat: "repeat",
-          backgroundSize: "150px 150px",
-          transform: "rotate(45deg) scale(1.2)",
-        }}
-      />
-
-      {/* Gradient overlay - Reduced opacity to show noise better */}
-      <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-800 opacity-85 pointer-events-none z-0" />
     </>
   )
 }

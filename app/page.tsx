@@ -450,19 +450,19 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
+    <div className="min-h-screen bg-[#060611] relative overflow-hidden">
       <NoiseBackground />
 
       <div className="relative z-10 min-h-screen">
         {!weatherData ? (
           <div className="min-h-screen flex items-center justify-center p-4">
-            <div className="w-full max-w-md">
+            <div className="w-full max-w-sm">
               <CityInput onSubmit={handleCitySubmit} loading={loading} />
               {error && (
-                <div className="mt-6 p-4 bg-red-900/20 border border-red-500/30 rounded backdrop-blur-sm">
-                  <p className="text-red-300 text-center font-medium">{error}</p>
-                  <p className="text-red-400 text-center text-sm mt-2">
-                    Try searching for a major city name (e.g., "London", "New York", "Tokyo")
+                <div className="mt-4 p-4 bg-red-500/[0.06] border border-red-500/10 rounded-lg backdrop-blur-sm">
+                  <p className="text-red-300/80 text-center text-sm">{error}</p>
+                  <p className="text-white/30 text-center text-xs mt-1.5">
+                    Try a major city like London, New York, or Tokyo
                   </p>
                 </div>
               )}
