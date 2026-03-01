@@ -100,14 +100,14 @@ export function Weather3D({ weatherCode, temperature }: Weather3DProps) {
 
   if (!mounted) {
     return (
-      <div className="w-full h-full rounded-lg overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+      <div className="w-full h-full rounded overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
         <div className="text-white text-2xl font-bold">{temperature}°C</div>
       </div>
     )
   }
 
   return (
-    <div className="w-full h-full rounded-lg overflow-hidden">
+    <div className="w-full h-full rounded overflow-hidden">
       <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
         <Environment preset="sunset" />
         <ambientLight intensity={0.5} />

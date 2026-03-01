@@ -290,7 +290,7 @@ export function WeatherMap({ weatherData, city }: WeatherMapProps) {
 
   if (!mounted) {
     return (
-      <div className="w-full h-full bg-gray-800 rounded-xl flex items-center justify-center">
+      <div className="w-full h-full bg-gray-800 rounded flex items-center justify-center">
         <div className="text-white">Loading map...</div>
       </div>
     )
@@ -298,7 +298,7 @@ export function WeatherMap({ weatherData, city }: WeatherMapProps) {
 
   if (mapError) {
     return (
-      <div className="w-full h-full bg-gray-800 rounded-xl flex items-center justify-center">
+      <div className="w-full h-full bg-gray-800 rounded flex items-center justify-center">
         <div className="text-center text-white">
           <div className="text-red-400 mb-2">⚠️ {mapError}</div>
           <div className="text-sm text-gray-400">Showing approximate location</div>
@@ -308,13 +308,13 @@ export function WeatherMap({ weatherData, city }: WeatherMapProps) {
   }
 
   return (
-    <div className="w-full h-full bg-gray-800 rounded-xl relative overflow-hidden">
+    <div className="w-full h-full bg-gray-800 rounded relative overflow-hidden">
       {/* Map container */}
       <div ref={mapRef} className="w-full h-full" />
 
       {/* Compact Mobile-Friendly Corner UI */}
       {/* Top Left - City Info */}
-      <div className="absolute top-2 left-2 bg-gray-900/95 backdrop-blur-sm rounded-lg p-2 max-w-[140px] z-[1000] shadow-lg border border-gray-700/50">
+      <div className="absolute top-2 left-2 bg-gray-900/95 backdrop-blur-sm rounded p-2 max-w-[140px] z-[1000] shadow-lg border border-gray-700/50">
         <div className="flex items-center space-x-1 text-white text-xs font-medium mb-1">
           <MapPin className="w-3 h-3 text-red-500 flex-shrink-0" />
           <span className="truncate">{city}</span>
@@ -325,7 +325,7 @@ export function WeatherMap({ weatherData, city }: WeatherMapProps) {
       </div>
 
       {/* Top Right - Legend */}
-      <div className="absolute top-2 right-2 bg-gray-900/95 backdrop-blur-sm rounded-lg p-2 z-[1000] shadow-lg border border-gray-700/50">
+      <div className="absolute top-2 right-2 bg-gray-900/95 backdrop-blur-sm rounded p-2 z-[1000] shadow-lg border border-gray-700/50">
         <div className="text-white text-xs space-y-1">
           <div className="font-medium mb-1">Legend</div>
           <div className="flex items-center space-x-1">
@@ -340,7 +340,7 @@ export function WeatherMap({ weatherData, city }: WeatherMapProps) {
       </div>
 
       {/* Bottom Left - Wind Info */}
-      <div className="absolute bottom-2 left-2 bg-gray-900/95 backdrop-blur-sm rounded-lg p-2 z-[1000] shadow-lg border border-gray-700/50">
+      <div className="absolute bottom-2 left-2 bg-gray-900/95 backdrop-blur-sm rounded p-2 z-[1000] shadow-lg border border-gray-700/50">
         <div className="text-white text-xs">
           <div className="flex items-center space-x-1 mb-1">
             <Wind className="w-3 h-3 text-blue-400 flex-shrink-0" />
@@ -368,7 +368,7 @@ export function WeatherMap({ weatherData, city }: WeatherMapProps) {
       </div>
 
       {/* Bottom Right - Weather Info */}
-      <div className="absolute bottom-2 right-2 bg-gray-900/95 backdrop-blur-sm rounded-lg p-2 z-[1000] shadow-lg border border-gray-700/50">
+      <div className="absolute bottom-2 right-2 bg-gray-900/95 backdrop-blur-sm rounded p-2 z-[1000] shadow-lg border border-gray-700/50">
         <div className="text-white text-xs space-y-1">
           <div className="flex items-center space-x-1">
             <Thermometer className="w-3 h-3 text-orange-400 flex-shrink-0" />
