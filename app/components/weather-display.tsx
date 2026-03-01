@@ -16,15 +16,12 @@ import {
   Moon,
   Cloud,
   CloudRain,
-  CloudSnow,
   CloudLightning,
   CloudDrizzle,
   CloudFog,
   CloudSun,
   CloudMoon,
   Snowflake,
-  Cloudy,
-  Thermometer,
 } from "lucide-react"
 import { WeatherTile } from "./weather-tile"
 import { WeatherMap } from "./weather-map"
@@ -143,51 +140,65 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
     }
   }, [weatherData, loading])
 
+  // Weather code groupings (WMO, OpenWeatherMap, and WeatherAPI codes)
+  const CLEAR_CODES = [0, 113, 800, 1000]
+  const PARTLY_CLOUDY_CODES = [1, 116, 801, 1003]
+  const CLOUDY_CODES = [2, 3, 119, 122, 802, 803, 804, 1006, 1009]
+  const FOG_CODES = [45, 48, 143, 248, 260, 701, 741, 1030, 1135, 1147]
+  const DRIZZLE_CODES = [51, 53, 55, 56, 57, 300, 301, 302, 310, 311, 312, 321, 1150, 1153, 1168, 1171]
+  const RAIN_CODES = [
+    61, 63, 65, 66, 67, 80, 81, 82,
+    500, 501, 502, 503, 504, 511, 520, 521, 522, 531,
+    1180, 1183, 1186, 1189, 1192, 1195, 1198, 1201, 1240, 1243, 1246,
+  ]
+  const SNOW_CODES = [
+    71, 73, 75, 77, 85, 86,
+    600, 601, 602, 611, 612, 613, 615, 616, 620, 621, 622,
+    1210, 1213, 1216, 1219, 1222, 1225, 1237, 1249, 1252, 1255, 1258, 1261, 1264,
+  ]
+  const THUNDERSTORM_CODES = [
+    95, 96, 99,
+    200, 201, 202, 210, 211, 212, 221, 230, 231, 232,
+    1087, 1273, 1276, 1279, 1282,
+  ]
+
   // SVG icon-based weather icon system
   const getWeatherIcon = (code: string, isDay = true, size = "w-16 h-16") => {
     const codeNum = parseInt(code)
 
-    // Clear/Sunny
-    if ([0, 113, 800, 1000].includes(codeNum)) {
+    if (CLEAR_CODES.includes(codeNum)) {
       return isDay
         ? <Sun className={`${size} text-amber-400`} strokeWidth={1.5} />
         : <Moon className={`${size} text-blue-300`} strokeWidth={1.5} />
     }
 
-    // Partly Cloudy
-    if ([1, 116, 801, 1003].includes(codeNum)) {
+    if (PARTLY_CLOUDY_CODES.includes(codeNum)) {
       return isDay
         ? <CloudSun className={`${size} text-amber-300`} strokeWidth={1.5} />
         : <CloudMoon className={`${size} text-blue-200`} strokeWidth={1.5} />
     }
 
-    // Cloudy / Overcast
-    if ([2, 3, 119, 122, 802, 803, 804, 1006, 1009].includes(codeNum)) {
+    if (CLOUDY_CODES.includes(codeNum)) {
       return <Cloud className={`${size} text-gray-300`} strokeWidth={1.5} />
     }
 
-    // Fog / Mist
-    if ([45, 48, 143, 248, 260, 701, 741, 1030, 1135, 1147].includes(codeNum)) {
+    if (FOG_CODES.includes(codeNum)) {
       return <CloudFog className={`${size} text-gray-400`} strokeWidth={1.5} />
     }
 
-    // Drizzle
-    if ([51, 53, 55, 56, 57, 300, 301, 302, 310, 311, 312, 321, 1150, 1153, 1168, 1171].includes(codeNum)) {
+    if (DRIZZLE_CODES.includes(codeNum)) {
       return <CloudDrizzle className={`${size} text-blue-300`} strokeWidth={1.5} />
     }
 
-    // Rain
-    if ([61, 63, 65, 66, 67, 80, 81, 82, 500, 501, 502, 503, 504, 511, 520, 521, 522, 531, 1180, 1183, 1186, 1189, 1192, 1195, 1198, 1201, 1240, 1243, 1246].includes(codeNum)) {
+    if (RAIN_CODES.includes(codeNum)) {
       return <CloudRain className={`${size} text-blue-400`} strokeWidth={1.5} />
     }
 
-    // Snow
-    if ([71, 73, 75, 77, 85, 86, 600, 601, 602, 611, 612, 613, 615, 616, 620, 621, 622, 1210, 1213, 1216, 1219, 1222, 1225, 1237, 1249, 1252, 1255, 1258, 1261, 1264].includes(codeNum)) {
+    if (SNOW_CODES.includes(codeNum)) {
       return <Snowflake className={`${size} text-sky-200`} strokeWidth={1.5} />
     }
 
-    // Thunderstorm
-    if ([95, 96, 99, 200, 201, 202, 210, 211, 212, 221, 230, 231, 232, 1087, 1273, 1276, 1279, 1282].includes(codeNum)) {
+    if (THUNDERSTORM_CODES.includes(codeNum)) {
       return <CloudLightning className={`${size} text-yellow-300`} strokeWidth={1.5} />
     }
 
