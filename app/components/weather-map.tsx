@@ -158,7 +158,14 @@ export function WeatherMap({ weatherData, city }: WeatherMapProps) {
         // Add animated wind flow arrows around the location
         const windRadians = (windDeg * Math.PI) / 180
         const arrowCount = 12
-        const spreadRadius = 0.08 // degrees spread
+        const spreadRadius = 0.08 // degrees of lat/lng spread around marker
+
+        // Animation tuning constants
+        const MIN_ANIM_DURATION_S = 1.5
+        const BASE_ANIM_DURATION_S = 4
+        const WIND_SPEED_DIVISOR = 20 // km/h per 1s reduction in duration
+        const BASE_MOVE_PX = 30
+        const MOVE_PX_PER_KMH = 0.5
 
         for (let i = 0; i < arrowCount; i++) {
           // Position arrows in a grid around the marker
@@ -170,12 +177,12 @@ export function WeatherMap({ weatherData, city }: WeatherMapProps) {
           const arrowLat = coordinates.lat + offsetLat
           const arrowLng = coordinates.lng + offsetLng
 
-          // Speed-based animation duration (faster wind = faster animation)
-          const duration = Math.max(1.5, 4 - (windSpeed / 20))
+          // Faster wind → shorter animation cycle
+          const duration = Math.max(MIN_ANIM_DURATION_S, BASE_ANIM_DURATION_S - (windSpeed / WIND_SPEED_DIVISOR))
           const delay = (i * 0.3) % duration
 
           // Calculate movement delta based on wind direction
-          const movePx = 30 + windSpeed * 0.5
+          const movePx = BASE_MOVE_PX + windSpeed * MOVE_PX_PER_KMH
           const dx = Math.sin(windRadians) * movePx
           const dy = -Math.cos(windRadians) * movePx
 
