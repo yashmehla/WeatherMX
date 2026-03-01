@@ -170,32 +170,32 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
   const isDayTime = isCurrentlyDay()
 
   return (
-    <div className="min-h-screen p-4 lg:p-6">
+    <div className="min-h-screen p-3 sm:p-4 lg:p-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6 max-w-7xl mx-auto fade-in">
+      <div className="flex items-center justify-between mb-4 sm:mb-6 max-w-7xl mx-auto fade-in">
         <button
           onClick={onBack}
-          className="text-white/40 hover:text-white h-10 px-4 flex items-center gap-2 border border-transparent hover:border-white/[0.08] transition-all duration-200 text-xs font-mono tracking-wider uppercase"
+          className="text-white/50 hover:text-white h-10 px-3 sm:px-4 flex items-center gap-2 border border-white/[0.06] hover:border-white/[0.15] transition-all duration-200 text-xs font-mono tracking-wider uppercase backdrop-blur-sm bg-white/[0.03]"
         >
           <ArrowLeft className="w-3 h-3" />
-          Back
+          <span className="hidden sm:inline">Back</span>
         </button>
 
-        <div className="text-center">
-          <h1 className="text-lg font-light text-white tracking-[0.15em] uppercase">{city}</h1>
-          <p className="text-white/20 text-[10px] font-mono mt-0.5 tracking-wider">
+        <div className="text-center min-w-0 flex-1 mx-2 sm:mx-4">
+          <h1 className="text-base sm:text-lg font-light text-white tracking-[0.15em] uppercase truncate">{city}</h1>
+          <p className="text-white/40 text-[10px] font-mono mt-0.5 tracking-wider">
             {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
-            {weatherData.timezone && <span className="ml-2 text-white/15">• {weatherData.timezone}</span>}
+            {weatherData.timezone && <span className="ml-2 text-white/30 hidden sm:inline">• {weatherData.timezone}</span>}
           </p>
         </div>
 
         <div className="flex items-center gap-1">
           <button
             onClick={() => setAutoRefresh(!autoRefresh)}
-            className={`h-10 px-3 flex items-center gap-1.5 border transition-all duration-200 text-[10px] font-mono tracking-wider uppercase ${
+            className={`h-10 px-2 sm:px-3 flex items-center gap-1.5 border transition-all duration-200 text-[10px] font-mono tracking-wider uppercase backdrop-blur-sm ${
               autoRefresh
-                ? "border-white/20 text-white/60"
-                : "border-transparent text-white/25 hover:text-white/40 hover:border-white/[0.08]"
+                ? "border-white/20 text-white/70 bg-white/[0.05]"
+                : "border-white/[0.06] text-white/35 hover:text-white/50 hover:border-white/[0.12] bg-white/[0.03]"
             }`}
             title="Auto-refresh every 5 minutes"
           >
@@ -207,10 +207,10 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
           <button
             onClick={handleRefresh}
             disabled={loading || refreshCooldown > 0}
-            className="text-white/30 hover:text-white h-10 px-4 flex items-center gap-2 border border-transparent hover:border-white/[0.08] transition-all duration-200 disabled:opacity-20 text-xs font-mono tracking-wider uppercase"
+            className="text-white/40 hover:text-white h-10 px-3 sm:px-4 flex items-center gap-2 border border-white/[0.06] hover:border-white/[0.15] transition-all duration-200 disabled:opacity-20 text-xs font-mono tracking-wider uppercase backdrop-blur-sm bg-white/[0.03]"
           >
             <RefreshCw className={`w-3 h-3 ${loading ? "animate-spin" : ""}`} />
-            {loading ? "..." : refreshCooldown > 0 ? `${refreshCooldown}s` : "Refresh"}
+            <span className="hidden sm:inline">{loading ? "..." : refreshCooldown > 0 ? `${refreshCooldown}s` : "Refresh"}</span>
           </button>
         </div>
       </div>
@@ -220,33 +220,33 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
 
         {/* Current Weather - Hero Card */}
         <div className="lg:col-span-5 fade-in fade-in-delay-1">
-          <div className="bg-white/[0.03] border border-white/[0.06] p-8 h-full">
+          <div className="glass-card-strong p-6 sm:p-8 h-full">
             <div className="text-center">
-              <div className="mb-6 flex justify-center">
-                {getWeatherIcon(current.weatherCode, isDayTime, "w-20 h-20")}
+              <div className="mb-4 sm:mb-6 flex justify-center">
+                {getWeatherIcon(current.weatherCode, isDayTime, "w-16 h-16 sm:w-20 sm:h-20")}
               </div>
-              <div className="text-8xl font-extralight text-white mb-1 tracking-tighter font-mono">{current.temp_C}°</div>
-              <div className="text-white/40 text-xs font-mono tracking-[0.15em] uppercase mb-0.5">{current.weatherDesc[0].value}</div>
-              <div className="text-white/20 text-[10px] font-mono">Feels like {current.FeelsLikeC}°C</div>
+              <div className="text-6xl sm:text-8xl font-extralight text-white mb-1 tracking-tighter font-mono">{current.temp_C}°</div>
+              <div className="text-white/60 text-xs font-mono tracking-[0.15em] uppercase mb-0.5">{current.weatherDesc[0].value}</div>
+              <div className="text-white/40 text-[10px] font-mono">Feels like {current.FeelsLikeC}°C</div>
 
-              <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 bg-white/[0.03] border border-white/[0.06]">
-                {isDayTime ? <Sun className="w-3 h-3 text-white/40" /> : <Moon className="w-3 h-3 text-white/40" />}
-                <span className="text-white/30 text-[10px] font-mono tracking-wider uppercase">{isDayTime ? "Day" : "Night"}</span>
+              <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 bg-white/[0.05] border border-white/[0.08] rounded-sm">
+                {isDayTime ? <Sun className="w-3 h-3 text-white/50" /> : <Moon className="w-3 h-3 text-white/50" />}
+                <span className="text-white/50 text-[10px] font-mono tracking-wider uppercase">{isDayTime ? "Day" : "Night"}</span>
               </div>
             </div>
 
             {/* Metrics Grid */}
-            <div className="grid grid-cols-2 gap-2 mt-8">
+            <div className="grid grid-cols-2 gap-2 mt-6 sm:mt-8">
               {[
                 { icon: Wind, label: "Wind", value: current.windspeedKmph, unit: "km/h" },
                 { icon: Droplets, label: "Humidity", value: current.humidity, unit: "%" },
                 { icon: Eye, label: "Visibility", value: current.visibility, unit: "km" },
                 { icon: Gauge, label: "Pressure", value: current.pressure, unit: "mb" },
               ].map(({ icon: Icon, label, value, unit }) => (
-                <div key={label} className="bg-white/[0.02] border border-white/[0.04] p-4 text-center hover:bg-white/[0.04] transition-colors duration-300">
-                  <Icon className="w-4 h-4 text-white/20 mx-auto mb-2" />
+                <div key={label} className="bg-white/[0.04] border border-white/[0.06] p-3 sm:p-4 text-center hover:bg-white/[0.06] transition-colors duration-300">
+                  <Icon className="w-4 h-4 text-white/30 mx-auto mb-2" />
                   <div className="text-white font-mono text-lg font-light">{value}</div>
-                  <div className="text-white/20 text-[10px] font-mono tracking-wider uppercase">{unit}</div>
+                  <div className="text-white/40 text-[10px] font-mono tracking-wider uppercase">{unit}</div>
                 </div>
               ))}
             </div>
@@ -254,15 +254,15 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
             {/* Sunrise/Sunset */}
             {(today.sunrise || today.sunset) && today.sunrise !== "N/A" && (
               <div className="mt-2 grid grid-cols-2 gap-2">
-                <div className="bg-white/[0.02] border border-white/[0.04] p-4 text-center">
-                  <Sunrise className="w-4 h-4 text-white/20 mx-auto mb-2" />
+                <div className="bg-white/[0.04] border border-white/[0.06] p-3 sm:p-4 text-center">
+                  <Sunrise className="w-4 h-4 text-white/30 mx-auto mb-2" />
                   <div className="text-white font-mono text-sm">{formatTime(today.sunrise)}</div>
-                  <div className="text-white/20 text-[10px] font-mono tracking-wider uppercase">Sunrise</div>
+                  <div className="text-white/40 text-[10px] font-mono tracking-wider uppercase">Sunrise</div>
                 </div>
-                <div className="bg-white/[0.02] border border-white/[0.04] p-4 text-center">
-                  <Sunset className="w-4 h-4 text-white/20 mx-auto mb-2" />
+                <div className="bg-white/[0.04] border border-white/[0.06] p-3 sm:p-4 text-center">
+                  <Sunset className="w-4 h-4 text-white/30 mx-auto mb-2" />
                   <div className="text-white font-mono text-sm">{formatTime(today.sunset)}</div>
-                  <div className="text-white/20 text-[10px] font-mono tracking-wider uppercase">Sunset</div>
+                  <div className="text-white/40 text-[10px] font-mono tracking-wider uppercase">Sunset</div>
                 </div>
               </div>
             )}
@@ -277,19 +277,19 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
         {/* Hourly Forecast */}
         {weatherData.hourly && weatherData.hourly.length > 0 && (
           <div className="lg:col-span-12 fade-in fade-in-delay-3">
-            <div className="bg-white/[0.03] border border-white/[0.06] p-6">
-              <h3 className="text-[10px] font-mono text-white/30 mb-4 tracking-[0.2em] uppercase">24-Hour Forecast</h3>
-              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+            <div className="glass-card p-4 sm:p-6">
+              <h3 className="text-[10px] font-mono text-white/50 mb-4 tracking-[0.2em] uppercase">24-Hour Forecast</h3>
+              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
                 {weatherData.hourly.slice(0, 24).map((hour: any, index: number) => (
                   <div
                     key={index}
                     className={`flex-shrink-0 w-16 p-3 text-center border transition-colors duration-200 ${
                       index === 0
-                        ? "bg-white/[0.06] border-white/[0.10]"
-                        : "bg-white/[0.02] border-white/[0.04] hover:bg-white/[0.04]"
+                        ? "bg-white/[0.08] border-white/[0.12]"
+                        : "bg-white/[0.03] border-white/[0.06] hover:bg-white/[0.06]"
                     }`}
                   >
-                    <div className="text-white/30 text-[9px] font-mono mb-2">
+                    <div className="text-white/50 text-[9px] font-mono mb-2">
                       {index === 0 ? "NOW" : formatHourlyTime(hour.time)}
                     </div>
                     <div className="mb-2 flex justify-center">
@@ -297,7 +297,7 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
                     </div>
                     <div className="text-white font-mono text-sm font-light">{hour.temp_C}°</div>
                     {hour.precipProb && parseInt(hour.precipProb) > 0 && (
-                      <div className="text-white/20 text-[9px] font-mono mt-1">
+                      <div className="text-white/35 text-[9px] font-mono mt-1">
                         <Droplets className="w-2 h-2 inline mr-0.5" />
                         {hour.precipProb}%
                       </div>
@@ -311,9 +311,9 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
 
         {/* Weather Map */}
         <div className="lg:col-span-12 fade-in fade-in-delay-3">
-          <div className="bg-white/[0.03] border border-white/[0.06] p-6">
-            <h3 className="text-[10px] font-mono text-white/30 mb-4 tracking-[0.2em] uppercase">Location</h3>
-            <div className="h-80 overflow-hidden">
+          <div className="glass-card p-4 sm:p-6">
+            <h3 className="text-[10px] font-mono text-white/50 mb-4 tracking-[0.2em] uppercase">Wind Map</h3>
+            <div className="h-64 sm:h-80 overflow-hidden rounded-sm">
               <WeatherMap weatherData={weatherData} city={city} />
             </div>
           </div>
@@ -321,21 +321,21 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
 
         {/* 7-Day Forecast */}
         <div className="lg:col-span-12 fade-in fade-in-delay-4">
-          <div className="bg-white/[0.03] border border-white/[0.06] p-6">
-            <h3 className="text-[10px] font-mono text-white/30 mb-4 tracking-[0.2em] uppercase">
+          <div className="glass-card p-4 sm:p-6">
+            <h3 className="text-[10px] font-mono text-white/50 mb-4 tracking-[0.2em] uppercase">
               {weatherData.weather.length}-Day Forecast
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2">
               {weatherData.weather.map((day: any, index: number) => (
                 <div
                   key={index}
-                  className={`p-4 text-center border transition-colors duration-200 ${
+                  className={`p-3 sm:p-4 text-center border transition-colors duration-200 ${
                     index === 0
-                      ? "bg-white/[0.06] border-white/[0.10]"
-                      : "bg-white/[0.02] border-white/[0.04] hover:bg-white/[0.04]"
+                      ? "bg-white/[0.08] border-white/[0.12]"
+                      : "bg-white/[0.03] border-white/[0.06] hover:bg-white/[0.06]"
                   }`}
                 >
-                  <div className="text-white/30 text-[10px] font-mono mb-3 tracking-wider uppercase">
+                  <div className="text-white/50 text-[10px] font-mono mb-3 tracking-wider uppercase">
                     {index === 0
                       ? "Today"
                       : new Date(day.date).toLocaleDateString("en-US", { weekday: "short" })}
@@ -344,10 +344,10 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
                     {getWeatherIcon(day.hourly[0].weatherCode, true, "w-8 h-8")}
                   </div>
                   <div className="text-white font-mono text-lg font-light">{day.maxtempC}°</div>
-                  <div className="text-white/25 font-mono text-sm">{day.mintempC}°</div>
-                  <div className="text-white/20 text-[9px] font-mono mt-1 truncate">{day.hourly[0].weatherDesc[0].value}</div>
+                  <div className="text-white/40 font-mono text-sm">{day.mintempC}°</div>
+                  <div className="text-white/35 text-[9px] font-mono mt-1 truncate">{day.hourly[0].weatherDesc[0].value}</div>
                   {day.precipMM && parseFloat(day.precipMM) > 0 && (
-                    <div className="text-white/15 text-[9px] font-mono mt-1">
+                    <div className="text-white/30 text-[9px] font-mono mt-1">
                       <Droplets className="w-2 h-2 inline mr-0.5" />{parseFloat(day.precipMM).toFixed(1)}mm
                     </div>
                   )}
@@ -359,8 +359,8 @@ export function WeatherDisplay({ weatherData, city, onBack, onRefresh, loading }
 
         {/* Footer */}
         <div className="lg:col-span-12 pb-4">
-          <div className="text-center pt-4 border-t border-white/[0.04]">
-            <p className="text-white/10 text-[9px] font-mono tracking-[0.2em] uppercase">
+          <div className="text-center pt-4 border-t border-white/[0.06]">
+            <p className="text-white/25 text-[9px] font-mono tracking-[0.2em] uppercase">
               WeatherMX • Built by Yash Mehla • Data from Open-Meteo
             </p>
           </div>

@@ -39,45 +39,45 @@ export function WeatherTile({ weatherData, city }: WeatherTileProps) {
   return (
     <div className="h-full space-y-3">
       {/* Wind Information Tile */}
-      <div className="bg-white/[0.03] border border-white/[0.06] p-6">
+      <div className="glass-card p-4 sm:p-6">
         <div className="flex items-center justify-between mb-5">
-          <h3 className="text-[10px] font-mono text-white/30 tracking-[0.2em] uppercase">Wind Analysis</h3>
-          <Wind className="w-3 h-3 text-white/15" />
+          <h3 className="text-[10px] font-mono text-white/50 tracking-[0.2em] uppercase">Wind Analysis</h3>
+          <Wind className="w-3 h-3 text-white/25" />
         </div>
 
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-4 sm:gap-6">
           <div className="space-y-1">
-            <div className="text-white/25 text-[10px] font-mono tracking-[0.15em] uppercase">Speed</div>
-            <div className="text-3xl font-extralight text-white font-mono">{current.windspeedKmph} <span className="text-xs text-white/25">km/h</span></div>
+            <div className="text-white/40 text-[10px] font-mono tracking-[0.15em] uppercase">Speed</div>
+            <div className="text-2xl sm:text-3xl font-extralight text-white font-mono">{current.windspeedKmph} <span className="text-xs text-white/40">km/h</span></div>
             {current.windGustsKmph && parseInt(current.windGustsKmph) > 0 && (
-              <div className="text-white/15 text-[10px] font-mono">Gusts: {current.windGustsKmph} km/h</div>
+              <div className="text-white/30 text-[10px] font-mono">Gusts: {current.windGustsKmph} km/h</div>
             )}
           </div>
           <div className="space-y-1">
-            <div className="text-white/25 text-[10px] font-mono tracking-[0.15em] uppercase">Direction</div>
+            <div className="text-white/40 text-[10px] font-mono tracking-[0.15em] uppercase">Direction</div>
             <div className="flex items-center gap-3">
               <WindArrow degrees={windDegrees} size={28} />
               <div className="flex flex-col">
-                <span className="text-2xl font-extralight text-white font-mono">{current.winddir16Point}</span>
-                <span className="text-[10px] text-white/20 font-mono">{windDegrees}°</span>
+                <span className="text-xl sm:text-2xl font-extralight text-white font-mono">{current.winddir16Point}</span>
+                <span className="text-[10px] text-white/35 font-mono">{windDegrees}°</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Wind intensity bar */}
-        <div className="mt-6 p-4 bg-white/[0.02] border border-white/[0.04]">
+        <div className="mt-6 p-3 sm:p-4 bg-white/[0.03] border border-white/[0.06]">
           <div className="flex justify-between text-[10px] font-mono mb-2">
-            <span className="text-white/25 tracking-wider uppercase">{windIntensity}</span>
-            <span className="text-white/40">{current.windspeedKmph} km/h</span>
+            <span className="text-white/40 tracking-wider uppercase">{windIntensity}</span>
+            <span className="text-white/50">{current.windspeedKmph} km/h</span>
           </div>
-          <div className="w-full bg-white/[0.06] h-1 relative overflow-hidden">
+          <div className="w-full bg-white/[0.08] h-1.5 relative overflow-hidden rounded-full">
             <div
-              className="h-1 bg-white/40 transition-all duration-1000"
+              className="h-1.5 bg-white/50 transition-all duration-1000 rounded-full"
               style={{ width: `${windPercent}%` }}
             />
           </div>
-          <div className="flex justify-between text-[9px] text-white/15 mt-1.5 font-mono">
+          <div className="flex justify-between text-[9px] text-white/25 mt-1.5 font-mono">
             <span>0</span>
             <span>20</span>
             <span>40</span>
@@ -87,29 +87,29 @@ export function WeatherTile({ weatherData, city }: WeatherTileProps) {
       </div>
 
       {/* Atmospheric Data Tile */}
-      <div className="bg-white/[0.03] border border-white/[0.06] p-6">
+      <div className="glass-card p-4 sm:p-6">
         <div className="flex items-center justify-between mb-5">
-          <h3 className="text-[10px] font-mono text-white/30 tracking-[0.2em] uppercase">Atmospheric Data</h3>
-          <Thermometer className="w-3 h-3 text-white/15" />
+          <h3 className="text-[10px] font-mono text-white/50 tracking-[0.2em] uppercase">Atmospheric Data</h3>
+          <Thermometer className="w-3 h-3 text-white/25" />
         </div>
 
         <div className="grid grid-cols-3 gap-2">
-          <div className="bg-white/[0.02] border border-white/[0.04] p-4">
-            <div className="text-white/25 text-[10px] font-mono tracking-wider uppercase mb-1">UV Index</div>
+          <div className="bg-white/[0.04] border border-white/[0.06] p-3 sm:p-4">
+            <div className="text-white/40 text-[10px] font-mono tracking-wider uppercase mb-1">UV Index</div>
             <div className="text-xl font-extralight text-white font-mono">{current.uvIndex || "—"}</div>
-            <div className="text-white/15 text-[9px] font-mono mt-1">
+            <div className="text-white/30 text-[9px] font-mono mt-1">
               {current.uvIndex !== "N/A" && current.uvIndex
                 ? parseInt(current.uvIndex) <= 2 ? "Low" : parseInt(current.uvIndex) <= 5 ? "Moderate" : parseInt(current.uvIndex) <= 7 ? "High" : "Very High"
                 : ""}
             </div>
           </div>
-          <div className="bg-white/[0.02] border border-white/[0.04] p-4">
-            <div className="text-white/25 text-[10px] font-mono tracking-wider uppercase mb-1">Cloud Cover</div>
+          <div className="bg-white/[0.04] border border-white/[0.06] p-3 sm:p-4">
+            <div className="text-white/40 text-[10px] font-mono tracking-wider uppercase mb-1">Cloud Cover</div>
             <div className="text-xl font-extralight text-white font-mono">{current.cloudcover}%</div>
           </div>
-          <div className="bg-white/[0.02] border border-white/[0.04] p-4">
-            <div className="text-white/25 text-[10px] font-mono tracking-wider uppercase mb-1">Precip</div>
-            <div className="text-xl font-extralight text-white font-mono">{current.precipMM || "0"}<span className="text-[10px] text-white/20">mm</span></div>
+          <div className="bg-white/[0.04] border border-white/[0.06] p-3 sm:p-4">
+            <div className="text-white/40 text-[10px] font-mono tracking-wider uppercase mb-1">Precip</div>
+            <div className="text-xl font-extralight text-white font-mono">{current.precipMM || "0"}<span className="text-[10px] text-white/35">mm</span></div>
           </div>
         </div>
 
@@ -117,12 +117,12 @@ export function WeatherTile({ weatherData, city }: WeatherTileProps) {
         <div className="mt-4 space-y-4">
           <div>
             <div className="flex justify-between text-[10px] font-mono mb-1.5">
-              <span className="text-white/25 tracking-wider uppercase">Humidity</span>
-              <span className="text-white/40">{current.humidity}%</span>
+              <span className="text-white/40 tracking-wider uppercase">Humidity</span>
+              <span className="text-white/50">{current.humidity}%</span>
             </div>
-            <div className="w-full bg-white/[0.06] h-1">
+            <div className="w-full bg-white/[0.08] h-1.5 rounded-full">
               <div
-                className="bg-white/30 h-1 transition-all duration-500"
+                className="bg-white/40 h-1.5 transition-all duration-500 rounded-full"
                 style={{ width: `${current.humidity}%` }}
               />
             </div>
@@ -130,12 +130,12 @@ export function WeatherTile({ weatherData, city }: WeatherTileProps) {
 
           <div>
             <div className="flex justify-between text-[10px] font-mono mb-1.5">
-              <span className="text-white/25 tracking-wider uppercase">Visibility</span>
-              <span className="text-white/40">{current.visibility} km</span>
+              <span className="text-white/40 tracking-wider uppercase">Visibility</span>
+              <span className="text-white/50">{current.visibility} km</span>
             </div>
-            <div className="w-full bg-white/[0.06] h-1">
+            <div className="w-full bg-white/[0.08] h-1.5 rounded-full">
               <div
-                className="bg-white/30 h-1 transition-all duration-500"
+                className="bg-white/40 h-1.5 transition-all duration-500 rounded-full"
                 style={{ width: `${Math.min((Number.parseInt(current.visibility) / 15) * 100, 100)}%` }}
               />
             </div>
@@ -143,8 +143,8 @@ export function WeatherTile({ weatherData, city }: WeatherTileProps) {
         </div>
 
         {/* Data source */}
-        <div className="mt-4 pt-3 border-t border-white/[0.04]">
-          <div className="text-[9px] text-white/15 text-center font-mono tracking-wider uppercase">
+        <div className="mt-4 pt-3 border-t border-white/[0.06]">
+          <div className="text-[9px] text-white/30 text-center font-mono tracking-wider uppercase">
             Live data • Open-Meteo & WeatherAPI
           </div>
         </div>

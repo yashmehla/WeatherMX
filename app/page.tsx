@@ -351,9 +351,9 @@ export default function Home() {
             <div className="w-full max-w-sm">
               <CityInput onSubmit={handleCitySubmit} loading={loading} />
               {error && (
-                <div className="mt-4 p-4 bg-white/[0.03] border border-white/[0.08]">
-                  <p className="text-white/60 text-center text-xs font-mono">{error}</p>
-                  <p className="text-white/20 text-center text-[10px] font-mono mt-1.5">
+                <div className="mt-4 p-4 bg-white/[0.05] border border-white/[0.1] backdrop-blur-sm">
+                  <p className="text-white/70 text-center text-xs font-mono">{error}</p>
+                  <p className="text-white/35 text-center text-[10px] font-mono mt-1.5">
                     Try a major city like London, New York, or Tokyo
                   </p>
                 </div>
